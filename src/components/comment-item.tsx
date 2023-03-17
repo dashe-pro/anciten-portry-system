@@ -1,31 +1,68 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './comment-item.scss'
-import { Avatar, Card } from 'antd'
-const { Meta } = Card
+import { Avatar, Col, Row } from 'antd'
+
+import { LikeOutlined, LikeFilled, MessageOutlined } from '@ant-design/icons'
 
 const CommentItem = (props) => {
-  const { Data } = props
+  const { Data, temp } = props
   console.log(Data)
+  const [collection, setCollection] = useState(false) //存放是否点赞
+  const handlecollection = () => {
+    if (collection === false) {
+      setCollection(true)
+    } else {
+      setCollection(false)
+    }
+  }
+  const handleComment = (id) => {
+    console.log(id)
+  }
   return (
-    <div>
+    <div className="commentitems">
       {Data.map((item) => (
-        <Card
-          bodyStyle={{ padding: '0,0,20px,10px' }}
-          bordered={false}
-          style={{
-            width: '50.334vw',
-            marginTop: 0,
-          }}>
-          <Meta
-            avatar={<Avatar src="" />}
-            title={item.user_info.name}
-            description={item.content}
-          />
-          <div>{item.createtime}</div>
-          <div className="padding-control">
-            <CommentItem Data={item.child}></CommentItem>
+        <div className="commentItem">
+          <Row>
+            <Col span={4}>
+              <Avatar className="userImg" src={item.user_info.img_src}></Avatar>
+            </Col>
+            <Col span={16}>
+              <div>{item.user_info.name}</div>
+            </Col>
+            <Col span={4}>
+              <div>{item.createtime}</div>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={20}>
+              {!temp ? (
+                <div>{item.content}</div>
+              ) : (
+                <div>
+                  回复{item.parent_info.name}:{item.content}
+                </div>
+              )}
+            </Col>
+          </Row>
+          <div className="commentContent">
+            <Row>
+              <Col span={6}>
+                <span onClick={handlecollection}>
+                  {collection ? <LikeFilled /> : <LikeOutlined />}
+                  {item.like_count}
+                </span>
+              </Col>
+              <Col span={6}>
+                <span>
+                  <MessageOutlined onClick={() => handleComment(item.id)} />
+                </span>
+              </Col>
+            </Row>
           </div>
-        </Card>
+          <div>
+            <CommentItem Data={item.child} temp={true}></CommentItem>
+          </div>
+        </div>
       ))}
     </div>
   )

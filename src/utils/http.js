@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const http = axios.create({
-  baseURL: '',
+  baseURL: 'http://localhost:8088',
   timeout: 5000
 })
 // 添加请求拦截器

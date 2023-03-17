@@ -9,7 +9,7 @@ import {
 } from 'antd-mobile-icons'
 import TopSwiper from './components/Swiper.tsx'
 import moment from 'moment'
-
+import solarLunar from 'solarlunar-es'
 import ClassifyPopup from './components/ClassifyPopup.tsx'
 import Poetryitem from '../../components/poetry-item.tsx'
 const Poetry = () => {
@@ -110,6 +110,17 @@ const Poetry = () => {
       <AppstoreOutline />
     </div>
   )
+  const getLunarAndTerm = () => {
+    const Data = solarLunar.solar2lunar(
+      moment().year(),
+      moment().month() + 1,
+      moment().date()
+    )
+    // const Data = solarLunar.solar2lunar(2015, 10, 8)
+    return Data
+  }
+  const Date = getLunarAndTerm()
+
   return (
     <div>
       <NavBar right={right} back={null} left={left}>
@@ -119,7 +130,8 @@ const Poetry = () => {
         <TopSwiper />
         <div>
           <div>{moment().format('YYYY-MM-DD')}</div>
-          <div></div>
+          <span>农历{Date.monthCn + Date.dayCn}</span>
+          <span>{Date.term ? '——' + Date.term : null}</span>
         </div>
         <div>
           <div>今日鉴诗</div>

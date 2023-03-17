@@ -1,26 +1,52 @@
 import React, { useEffect, useState } from 'react'
 
-import {
-  Popup,
-  NavBar,
-  Button,
-  SearchBar,
-  IndexBar,
-  CheckList,
-} from 'antd-mobile'
+import { Popup, NavBar, Button, IndexBar, CheckList } from 'antd-mobile'
+import { http } from '../../../utils'
+
 const ClassifyPopup = (props) => {
   const { visible, setVisible } = props
-  const [authorSelected, setAuthorSelected] = useState([''])
-  const [dynastySelected, setDynastySelected] = useState([''])
-  const [typeSelected, setTypeSelected] = useState([''])
+  const [authorSelected, setAuthorSelected] = useState([])
+  const [dynastySelected, setDynastySelected] = useState([])
+  const [typeSelected, setTypeSelected] = useState([])
 
+  const [dynastys, setDynastys] = useState([])
+  const [author, setAuthor] = useState([])
+
+  const getAllDynasty = async () => {
+    const res = await http.get('/dynastys/AllDynastys')
+    console.log(res, 'res')
+    setDynastys(res.data.list)
+  }
+  const getHotAuthor = async () => {
+    const res = await http.get('/author/someAuthor')
+    console.log(res, 'res')
+    setAuthor(res.data.list)
+  }
   useEffect(() => {
     //请求返回所以有的诗人，朝代，类型
-  })
+    getAllDynasty()
+    getHotAuthor()
+  }, [])
+  const CheckListChange = (value, params) => {
+    if (params == 'author') {
+      setAuthorSelected(value)
+      setDynastySelected([])
+      setTypeSelected([])
+    } else if (params == 'dynasty') {
+      setDynastySelected(value)
+      setAuthorSelected([])
+      setTypeSelected([])
+    } else {
+      setTypeSelected(value)
+      setAuthorSelected([])
+      setDynastySelected([])
+    }
+  }
+
   //模拟数据
-  const author = ['李白', '杜甫', '白居易']
-  const dynasty = ['汗', '唐', '宋']
-  const type = ['写景', '抒情']
+  const author1 = []
+  const dynasty1 = []
+  const type = ['诗', '词', '文', '曲', '赋']
   const left = (
     <Button color="primary" fill="outline">
       确定
@@ -53,9 +79,9 @@ const ClassifyPopup = (props) => {
             multiple
             value={authorSelected}
             onChange={(value) => {
-              setAuthorSelected(value)
+              CheckListChange(value, 'author')
             }}>
-            {author.map((item) => (
+            {author1.map((item) => (
               <CheckList.Item value={item}>{item}</CheckList.Item>
             ))}
           </CheckList>
@@ -63,10 +89,11 @@ const ClassifyPopup = (props) => {
         <IndexBar.Panel index="朝代" title="朝代" key="朝代">
           <CheckList
             multiple
+            value={dynastySelected}
             onChange={(value) => {
-              setDynastySelected(value)
+              CheckListChange(value, 'dynasty')
             }}>
-            {dynasty.map((item) => (
+            {dynasty1.map((item) => (
               <CheckList.Item value={item}>{item}</CheckList.Item>
             ))}
           </CheckList>
@@ -74,8 +101,9 @@ const ClassifyPopup = (props) => {
         <IndexBar.Panel index="类型" title="类型" key="类型">
           <CheckList
             multiple
+            value={typeSelected}
             onChange={(value) => {
-              setTypeSelected(value)
+              CheckListChange(value, 'type')
             }}>
             {type.map((item) => (
               <CheckList.Item value={item}>{item}</CheckList.Item>

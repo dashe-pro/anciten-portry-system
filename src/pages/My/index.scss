@@ -1,0 +1,14 @@
+.card {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: url('../../assets/userback.jpg') no-repeat;
+  background-size: 100% 200px;
+  //     background-position: bottom 25px right 22px;
+  .user {
+    position: absolute;
+    left: 30%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

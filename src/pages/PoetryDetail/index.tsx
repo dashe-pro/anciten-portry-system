@@ -7,13 +7,14 @@ import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import VideoPopup from './components/VideoPopup.tsx'
 import PoetryComment from '../../components/poetry-comment.jsx'
+
 const PoetryDetail = () => {
   const [videoVisible, setVideoVisible] = useState(false)
   const [collection, setCollection] = useState(false) //存放是否收藏
   const [params] = useSearchParams()
   //拿到路由id
   const id = params.get('id')
-  const navigate = useNavigate()
+
   useEffect(() => {
     const getpoetryinfo = () => {
       //根据id拿去诗词信息
@@ -42,9 +43,6 @@ const PoetryDetail = () => {
   }
   const poetrycontent = poetry.content.split('。')
 
-  const back = () => {
-    navigate('/poetry')
-  }
   const handlecollection = () => {
     if (collection === false) {
       setCollection(true)
@@ -88,7 +86,7 @@ const PoetryDetail = () => {
   )
   return (
     <div>
-      <NavBar onBack={back} right={right}></NavBar>
+      <NavBar onBack={() => history.go(-1)} right={right}></NavBar>
       <div>
         <div>{poetry.name}</div>
         <div>{'[' + poetry.dynasty + ']' + author.name}</div>
