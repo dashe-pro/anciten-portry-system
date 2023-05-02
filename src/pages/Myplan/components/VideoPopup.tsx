@@ -32,7 +32,7 @@ const VideoPopup = (props) => {
             {'[' + initpoetry.dynasty + ']' + initpoetry.author}
           </div>
           {poetrycontent.map((item, index) => (
-            <div key={index} className="content">
+            <div key={index} className="content-pop">
               {item}
             </div>
           ))}
