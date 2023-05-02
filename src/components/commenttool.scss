@@ -1,0 +1,22 @@
+.commenttool {
+  position: fixed;
+  bottom: 0;
+  background-color: #f2ebd9;
+  height: 60px;
+  width: 375px !important;
+  z-index: 99;
+}
+.buttom {
+  width: 70px;
+  background-color: #753a32;
+  color: #fff;
+  box-shadow: 3px 3px 5px gray;
+  border-color: #753a32;
+  margin-top: 9px;
+}
+.input {
+  margin-top: 9px;
+}
+.ant-form-item .ant-form-item-explain-error {
+  color: #753a32;
+}

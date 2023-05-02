@@ -14,6 +14,17 @@ class LoginStore {
     console.log(res)
     this.token = res.data.data.token
     setToken(res.data.data.token)
+    window.localStorage.setItem('id', res.data.data.id)
+    window.localStorage.setItem('username', res.data.data.username)
+    window.localStorage.setItem('imgurl', res.data.data.imgUrl)
+  }
+  loginout = () => {
+
+    this.token = ''
+    clearToken()
+    window.localStorage.clear('id')
+    window.localStorage.clear('username')
+    window.localStorage.clear('imgurl')
   }
 }
 export default LoginStore

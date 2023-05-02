@@ -1,77 +1,99 @@
 import React from 'react'
-import { NavBar, Space, Toast, Tabs } from 'antd-mobile'
+import { NavBar, Space, Toast, Tabs, InfiniteScroll } from 'antd-mobile'
 import { useNavigate } from 'react-router-dom'
 import { history } from '../../utils/index.js'
 import { SoundOutline, StarOutline, StarFill } from 'antd-mobile-icons'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import VideoPopup from './components/VideoPopup.tsx'
-import PoetryComment from '../../components/poetry-comment.jsx'
 
+import Commentitem from '../../components/commentitem.tsx'
+import './index.scss'
+import { http } from '../../utils/index.js'
+import '../../components/nav.scss'
+import Commenttool from '../../components/commenttool.tsx'
 const PoetryDetail = () => {
   const [videoVisible, setVideoVisible] = useState(false)
   const [collection, setCollection] = useState(false) //存放是否收藏
+  const [info, setInfo] = useState({
+    id: null,
+    title: '',
+    author: '',
+    content: '',
+    dynasty: '',
+    annotation: '',
+    intro: '',
+    translation: '',
+  })
+  const [commentList, setCommentList] = useState([])
   const [params] = useSearchParams()
   //拿到路由id
   const id = params.get('id')
+  const intid = parseInt(params.get('id'))
+  console.log(intid, id)
 
+  const getcommentlist = async () => {
+    const res = await http.get(
+      `/comment/poetryComment?poetryId=${intid}&pageNo=1`
+    )
+    console.log(res)
+
+    setCommentList(res.data.data.list)
+  }
   useEffect(() => {
-    const getpoetryinfo = () => {
-      //根据id拿去诗词信息
-      //根据诗人id去拿诗人信息
-      console.log(id, 'id')
+    const getpoetryinfo = async () => {
+      const res = await http.get(`/poetry/getPoetryById?id=${id}`)
+      console.log(res, 'res')
+      setInfo(res.data.data.poetry)
     }
-    getpoetryinfo()
-  }, [id])
-  const poetry = {
-    id: id,
-    name: '春晓',
-    author_id: '1',
-    content: '春眠不觉晓，处处闻啼鸟。夜来风雨声，花落知多少。',
-    dynasty: '唐',
-    audio_src: '1',
-    appreciation: '这首诗词非常不错',
-    translation: '春天来了万物复苏',
-  }
-  const author = {
-    id: '1',
-    describe:
-      '孟浩然(689-740)，名浩，字浩然，号孟山人，襄州襄阳现湖北襄阳人，世称孟襄阳。因他未曾入仕，又称之为孟山人，是唐代著名的山水田园派诗人。孟浩然生当盛唐，早年有志用世，在仕途困顿、痛苦失望后，尚能自重，不媚俗世，以隐士终身。',
-    name: '孟浩然',
-    dynasty: '唐',
-    poetry: [{}],
-  }
-  const poetrycontent = poetry.content.split('。')
 
-  const handlecollection = () => {
+    getpoetryinfo()
+    getcommentlist()
+  }, [id])
+
+  const poetrycontent = info.content.split('。')
+
+  const handlecollection = async () => {
     if (collection === false) {
       setCollection(true)
-      Toast.show({
-        icon: 'success',
-        content: '收藏成功',
-      })
+      const res = await http.get(
+        `/collect/poetry?userId=${window.localStorage.getItem(
+          'id'
+        )}&poetryId=${id}`
+      )
+      if (res.data.message == '成功') {
+        Toast.show({
+          icon: 'success',
+          content: '收藏成功',
+        })
+      }
     } else {
       setCollection(false)
-      Toast.show({
-        icon: 'fail',
-        content: '取消收藏',
-      })
+      const res = await http.get(
+        `/collect/delete?userId=${window.localStorage.getItem(
+          'id'
+        )}&poetryId=${id}`
+      )
+      if (res.data.message == '成功') {
+        Toast.show({
+          icon: 'fail',
+          content: '取消收藏',
+        })
+      }
     }
   }
   const handleSound = () => {
-    if (poetry.audio_src === '') {
-      Toast.show({
-        icon: 'fail',
-        content: '此诗暂时没有音频资源',
-      })
-    } else {
-      setVideoVisible(true)
-    }
+    Toast.show({
+      content: '正在播放音频资源，请调高音量！',
+    })
+    let synth = window.speechSynthesis
+    let utterThis = new SpeechSynthesisUtterance(
+      info.title + '。' + info.dynasty + info.author + '。' + info.content
+    )
+    utterThis.pitch = 1 //音调
+    utterThis.rate = 0.6 //速度
+    synth.speak(utterThis)
   }
-  const [commentsLength, setCommentsLength] = useState<Number>() //存放评论区长度
-  const getCommentsLength = (val: Number) => {
-    setCommentsLength(val)
-  }
+
   const right = (
     <div style={{ fontSize: 24 }}>
       <Space style={{ '--gap': '16px' }}>
@@ -84,42 +106,67 @@ const PoetryDetail = () => {
       </Space>
     </div>
   )
+  const Nodata = (prop) => {
+    const { name } = prop
+    return (
+      <div>
+        <div className="flower" />
+        <div className="font">该古诗暂时没有{name}</div>
+      </div>
+    )
+  }
+  const [hasMore, setHasMore] = useState(true)
+  const [pageNo, setPageNo] = useState(2)
+
+  async function loadMore() {
+    const res = await http.get(
+      `/comment/poetryComment?poetryId=${id}&pageNo=${pageNo}`
+    )
+
+    console.log(res)
+    let append = res.data.data.list
+    setCommentList((val) => [...val, ...append])
+    setHasMore(append.length > 0)
+    setPageNo(pageNo + 1)
+  }
   return (
     <div>
-      <NavBar onBack={() => history.go(-1)} right={right}></NavBar>
-      <div>
-        <div>{poetry.name}</div>
-        <div>{'[' + poetry.dynasty + ']' + author.name}</div>
-        {poetrycontent.map((item) => (
-          <div>{item}</div>
-        ))}
+      <NavBar className="nav" onBack={() => history.go(-1)} right={right}>
+        详情
+      </NavBar>
+      <div className="poetry1">
+        <div className="poetry1-content">
+          <div className="title5">{info.title}</div>
+          <div className="author">{'[' + info.dynasty + ']' + info.author}</div>
+          {poetrycontent.map((item) => (
+            <div className="content">{item}</div>
+          ))}
+        </div>
       </div>
       <Tabs>
-        <Tabs.Tab title="赏析" key="1">
-          {poetry.appreciation}
+        <Tabs.Tab title="介绍" key="1">
+          {info.intro ? info.intro : <Nodata name="介绍" />}
         </Tabs.Tab>
-        <Tabs.Tab title="作者" key="2">
-          {author.describe}
+        <Tabs.Tab title="注释" key="2">
+          {info.annotation ? info.annotation : <Nodata name="注释" />}
         </Tabs.Tab>
         <Tabs.Tab title="译文" key="3">
-          {poetry.translation}
+          {info.translation ? info.translation : <Nodata name="译文" />}
         </Tabs.Tab>
-        <Tabs.Tab
-          title={
-            commentsLength == null
-              ? '评论'
-              : '评论' + '(' + commentsLength + ')'
-          }
-          key="4">
-          <PoetryComment id={id} getCommentsLength={getCommentsLength} />
+        <Tabs.Tab title="评论" key="4">
+          <div>
+            {commentList.map((item) => (
+              <Commentitem key={item.id} value={item} type={1} />
+            ))}
+            <InfiniteScroll
+              threshold={10}
+              loadMore={loadMore}
+              hasMore={hasMore}
+            />
+          </div>
+          <Commenttool objectId={id} type={1} />
         </Tabs.Tab>
       </Tabs>
-      <VideoPopup
-        videoVisible={videoVisible}
-        setVideoVisible={setVideoVisible}
-        name={poetry.name}
-        audio_src={poetry.audio_src}
-      />
     </div>
   )
 }

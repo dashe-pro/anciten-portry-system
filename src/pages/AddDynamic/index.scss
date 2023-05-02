@@ -1,0 +1,33 @@
+.text {
+  background-color: #f2ebd9;
+  margin-top: 10px;
+}
+.private {
+  border-top: 1px solid #753a32;
+  border-bottom: 1px solid #753a32;
+}
+.buttom2 {
+  position: fixed;
+  bottom: 10%;
+  width: 300px;
+  background-color: #753a32;
+  color: #fff;
+  box-shadow: 3px 3px 5px gray;
+  border-color: #753a32;
+
+  left: 50%;
+  transform: translateX(-50%);
+}
+.lock {
+  color: #753a32;
+  font-weight: 700;
+}
+.ant-switch.ant-switch-checked {
+  background: #753a32;
+}
+.ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
+  background: #753a32;
+}
+.ant-input:hover {
+  border-color: #f2ebd9;
+}

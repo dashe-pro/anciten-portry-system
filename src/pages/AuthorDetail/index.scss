@@ -1,0 +1,24 @@
+.authordetail {
+  .info {
+    margin-top: 55px !important;
+    width: 360px;
+
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-radius: 20px;
+    background-color: #cbc0ae;
+    margin-bottom: 10px;
+    box-shadow: 3px 3px 5px gray;
+    padding: 10px 10px;
+    .title3 {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+  }
+}
+.sound {
+  position: absolute;
+  right: 30px;
+}

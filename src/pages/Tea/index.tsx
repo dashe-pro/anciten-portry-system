@@ -1,41 +1,59 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Apptabbar from '../../components/app-tabbar.tsx'
-import { NavBar, Space, Tabs } from 'antd-mobile'
-import { SearchOutline, MoreOutline, CloseOutline } from 'antd-mobile-icons'
+
+import { Col, Row, Tabs, Input } from 'antd'
+import { AddCircleOutline } from 'antd-mobile-icons'
+
+import { useNavigate } from 'react-router-dom'
+import './index.scss'
+import My from './components/my.tsx'
+import Dynamic from './components/dynamic.tsx'
+import Library from './components/library.tsx'
 
 const Tea = () => {
-  const right = (
-    <div style={{ fontSize: 24 }}>
-      <Space style={{ '--gap': '16px' }}>
-        <SearchOutline />
-        <MoreOutline />
-      </Space>
+  const [key, setKey] = useState(1)
+  const navigate = useNavigate()
+  const handldAddDynamic = () => {
+    // history.push(`/poetrydetail?id=${id}`)
+    navigate('/adddynamic')
+  }
+  const operations = (
+    <div onClick={handldAddDynamic} style={{ fontSize: 24 }}>
+      <AddCircleOutline />
     </div>
   )
-  const left = (
-    <div style={{ fontSize: 24 }}>
-      <Space style={{ '--gap': '16px' }}>
-        <SearchOutline />
-        <MoreOutline />
-      </Space>
-    </div>
-  )
+  const onChange = (key) => {
+    setKey(key)
+  }
+  const items = [
+    {
+      key: '1',
+      label: `文库`,
+      children: <Library />,
+    },
+    {
+      key: '2',
+      label: `动态`,
+      children: <Dynamic />,
+    },
+
+    {
+      key: '3',
+      label: `我的`,
+      children: <My />,
+    },
+  ]
   return (
     <div>
-      <NavBar right={right} back={null} left={left}>
-        茶舍
-      </NavBar>
-      <Tabs>
-        <Tabs.Tab title="一盏" key="1">
-          1
-        </Tabs.Tab>
-        <Tabs.Tab title="清茶" key="2">
-          2
-        </Tabs.Tab>
-        <Tabs.Tab title="觅知音" key="3">
-          3
-        </Tabs.Tab>
-      </Tabs>
+      <Tabs
+        className="tabs1"
+        tabBarStyle={{ position: 'fixed', top: '0' }}
+        defaultActiveKey="1"
+        items={items}
+        tabBarExtraContent={operations}
+        onChange={onChange}
+      />
+
       <Apptabbar />
     </div>
   )

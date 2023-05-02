@@ -16,6 +16,40 @@
   }
 
   .login-checkbox-label {
-    color: #1890ff;
+    color: #753a32;
   }
+}
+.ant-card {
+  background-color: #f0ebe1;
+  box-shadow: 3px 3px 5px gray;
+}
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #753a32;
+  border-color: #753a32;
+}
+.lunarmid1 {
+  position: absolute;
+  top: -50px;
+  left: -1px;
+  .cloud1 {
+    width: 300px;
+    height: 94px;
+    z-index: 99;
+  }
+}
+.ant-btn-primary {
+  background-color: #753a32;
+}
+.ant-btn-primary:not(:disabled):hover {
+  background-color: #753a32;
+}
+.bird1 {
+  width: 190px;
+  height: 200px;
+  position: fixed;
+  background: url('../../assets/birdone.svg') no-repeat;
+  background-size: cover;
+  right: 0;
+  top: -1px;
+  z-index: 99;
 }

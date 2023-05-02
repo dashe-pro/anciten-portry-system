@@ -7,12 +7,7 @@ import {
   useLocation,
   MemoryRouter as Router,
 } from 'react-router-dom'
-import {
-  AppOutline,
-  MessageOutline,
-  UnorderedListOutline,
-  UserOutline,
-} from 'antd-mobile-icons'
+
 const Apptabbar = () => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -26,22 +21,19 @@ const Apptabbar = () => {
     {
       key: '/poetry',
       title: '诗词',
-      icon: <AppOutline />,
-    },
-    {
-      key: '/tea',
-      title: '茶社',
-      icon: <UnorderedListOutline />,
     },
     {
       key: '/recitepoetry',
-      title: '背诗',
-      icon: <MessageOutline />,
+      title: '背诵',
     },
+    {
+      key: '/tea',
+      title: '集会',
+    },
+
     {
       key: '/my',
       title: '我的',
-      icon: <UserOutline />,
     },
   ]
 
@@ -51,7 +43,7 @@ const Apptabbar = () => {
       activeKey={pathname}
       onChange={(value) => setRouteActive(value)}>
       {tabs.map((item) => (
-        <TabBar.Item key={item.key} icon={item.icon} title={item.title} />
+        <TabBar.Item key={item.key} title={item.title} />
       ))}
     </TabBar>
   )

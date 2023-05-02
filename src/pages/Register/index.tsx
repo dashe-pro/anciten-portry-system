@@ -4,13 +4,13 @@ import './index.scss'
 import { useNavigate } from 'react-router-dom'
 import { NavBar, Toast } from 'antd-mobile'
 import { history, http } from '../../utils/index.js'
+import React, { useEffect, useState } from 'react'
 const Register = () => {
   const navigate = useNavigate()
   const back = () => {
     history.go(-1)
   }
   const onFinish = async (values) => {
-    console.log(values)
     const { username, password } = values
     async function Register() {
       //注册操作
@@ -33,6 +33,25 @@ const Register = () => {
     <div>
       <NavBar onBack={back}></NavBar>
       <div className="login">
+        <div className="lunarmid2">
+          <svg
+            className="cloud2"
+            width="233"
+            height="75"
+            viewBox="0 0 233 75"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M223.89 75C226.614 75 229.348 73.9588 230.703 71.596C232.164 69.0477 233 66.0945 233 62.9462C233 53.3306 225.206 45.5356 215.592 45.5356C214.84 45.5356 214.211 44.9202 214.233 44.1682C214.246 43.7327 214.253 43.2956 214.253 42.8569C214.253 19.1877 195.068 0 171.402 0C153.574 0 138.288 10.89 131.832 26.3822C131.596 26.9493 131.33 27.5066 130.975 28.0086C128.066 32.1298 123.267 34.8213 117.839 34.8213C117.478 34.8213 117.122 34.7364 116.788 34.5975C112.989 33.0159 108.821 32.1426 104.448 32.1426C100.93 32.1426 97.543 32.7082 94.3743 33.7534C90.0795 35.1701 85.2208 34.6776 81.2049 32.598C77.3383 30.5957 72.9478 29.4646 68.2931 29.4646C58.4797 29.4646 49.8404 34.4921 44.8095 42.1123C42.5348 45.5579 39.007 48.1776 34.9842 49.1068C32.2777 49.732 29.692 50.6727 27.2678 51.8883C24.7159 53.1679 21.812 53.6043 18.9574 53.5729C18.8874 53.5721 18.8173 53.5717 18.7471 53.5717C8.39337 53.5717 -1.52588e-05 61.9664 -1.52588e-05 72.3216C-1.52588e-05 73.8637 1.33511 75 2.87715 75H223.89Z"
+              fill="#9D9D81"
+            />
+            <path
+              d="M88.3793 14.7319C88.3793 18.4302 91.3769 21.4283 95.0747 21.4283C98.7725 21.4283 101.77 18.4302 101.77 14.7319C101.77 11.0336 98.7725 8.03549 95.0747 8.03549C91.3769 8.03549 88.3793 11.0336 88.3793 14.7319Z"
+              fill="#9D9D81"
+            />
+          </svg>
+        </div>
+        <div className="bird2" />
         <Card className="login-container">
           <Form onFinish={onFinish}>
             <Form.Item
@@ -59,7 +78,12 @@ const Register = () => {
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit" size="large" block>
+              <Button
+                className="button"
+                type="primary"
+                htmlType="submit"
+                size="large"
+                block>
                 注册
               </Button>
             </Form.Item>

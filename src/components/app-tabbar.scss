@@ -2,5 +2,13 @@
   position: fixed;
   width: 100%;
   bottom: 0;
-  background-color: white;
+  background-color: #e9e4d1;
+  box-shadow: 0 -1px 5px gray;
+}
+.adm-tab-bar-item-active {
+  color: #753a32;
+}
+.adm-tab-bar-item-title {
+  font-size: 18px;
+  font-weight: 700;
 }

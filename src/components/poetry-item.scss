@@ -1,0 +1,30 @@
+// $colors: (
+//   blue: #007bff,
+//   green: #88eeff,
+//   red: #ff0000,
+// );
+
+// @function random-color() {
+//   @return $colors[Math.floor(Math.random() * $colors.length) ];
+// }
+
+.poetry {
+  margin-top: 10px !important;
+  width: 360px;
+
+  margin: 0 auto;
+
+  border-radius: 20px;
+  background-color: random-color();
+  margin-bottom: 10px;
+  box-shadow: 3px 3px 5px gray;
+  padding: 10px 10px;
+  .title4 {
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .author3 {
+    color: gray;
+    margin-bottom: 3px;
+  }
+}
